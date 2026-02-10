@@ -75,7 +75,7 @@ func parseArgs(args []string) (greeterConfig, error) {
 // flag is set, in which case the numerical value is ignored.
 func validateArgs(c greeterConfig) error {
 	if c.numTimes < 1 && !c.printUsage {
-		return errors.New("Invalid argument. Must provide a number greater than 0.")
+		return errors.New("Invalid argument. Must specify a number greater than 0.")
 	}
 	return nil
 }
