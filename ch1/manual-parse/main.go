@@ -39,8 +39,7 @@ func main() {
 
 func printUsage(w io.Writer) {
 	var greetDesc = fmt.Sprintf(
-		`Usage: %s <integer> [-h|-help]
-		A greeter application which prints the name you entered <integer> number of times.`,
+		"Usage: %s <integer> [-h|-help] \nA greeter application which prints the name you entered <integer> number of times.\n",
 		os.Args[0])
 
 	io.WriteString(w, greetDesc)
@@ -55,7 +54,7 @@ func printUsage(w io.Writer) {
 func parseArgs(args []string) (greeterConfig, error) {
 	config := greeterConfig{}
 	if len(args) != 1 {
-		return config, errors.New("No arguments specified.")
+		return config, errors.New("Invalid number of arguments.")
 	}
 	if args[0] == "-h" || args[0] == "--help" {
 		config.printUsage = true
@@ -70,6 +69,10 @@ func parseArgs(args []string) (greeterConfig, error) {
 	return config, nil
 }
 
+// validateArgs checks if the provided configuration is logically valid.
+//
+// It ensures that numTimes is a positive integer unless the printUsage
+// flag is set, in which case the numerical value is ignored.
 func validateArgs(c greeterConfig) error {
 	if c.numTimes < 1 && !c.printUsage {
 		return errors.New("Invalid argument. Must provide a number greater than 0.")
