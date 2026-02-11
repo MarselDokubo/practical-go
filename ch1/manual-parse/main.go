@@ -16,6 +16,12 @@ type greeterConfig struct {
 	printUsage bool
 }
 
+var greetDesc = fmt.Sprintf(
+	"Usage: %s <integer> [-h|-help] \nA greeter application which prints the name you entered <integer> number of times.\n",
+	os.Args[0])
+
+var ErrNoName = errors.New("No name specified.")
+
 func main() {
 	c, err := parseArgs(os.Args[1:])
 	if err != nil {
@@ -38,9 +44,6 @@ func main() {
 }
 
 func printUsage(w io.Writer) {
-	var greetDesc = fmt.Sprintf(
-		"Usage: %s <integer> [-h|-help] \nA greeter application which prints the name you entered <integer> number of times.\n",
-		os.Args[0])
 
 	io.WriteString(w, greetDesc)
 }
@@ -100,7 +103,7 @@ func getUserName(i io.Reader, o io.Writer) (string, error) {
 
 	name = strings.TrimSpace(scanner.Text())
 	if len(name) == 0 {
-		return "", errors.New("No name specified.")
+		return "", ErrNoName
 	}
 	return name, nil
 }
